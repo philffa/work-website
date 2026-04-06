@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phil's Job Assessor</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700;800&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0e0a;
+  --surface: #13160f;
+  --surface2: #1a1f14;
+  --surface3: #212819;
+  --border: rgba(255,255,255,0.07);
+  --border-md: rgba(255,255,255,0.13);
+  --text: #e8ede0;
+  --muted: #6b7560;
+  --green: #7ec850;
+  --green-dim: rgba(126,200,80,0.12);
+  --amber: #f0a830;
+  --amber-dim: rgba(240,168,48,0.12);
+  --red: #e05440;
+  --red-dim: rgba(224,84,64,0.12);
+  --rust: #c05418;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+header {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--green);
+}
+.logo span { color: var(--muted); font-weight: 500; }
+header p { font-size: 0.78rem; color: var(--muted); margin-left: auto; }
+
+/* MAIN */
+main {
+  flex: 1;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* INPUT AREA */
+.input-card {
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: 10px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+.input-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 0.75rem;
+  display: block;
+}
+.url-row {
+  display: flex;
+  gap: 0.75rem;
+}
+.url-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--border-md);
+  color: var(--text);
+  padding: 0.75rem 1rem;
+  border-radius: 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.url-input:focus { border-color: var(--green); }
+.url-input::placeholder { color: var(--muted); }
+.assess-btn {
+  background: var(--green);
+  color: #0c0e0a;
+  border: none;
+  padding: 0.75rem 1.75rem;
+  border-radius: 7px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  white-space: nowrap;
+}
+.assess-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.assess-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.75rem;
+  line-height: 1.5;
+}
+.hint code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  background: var(--surface2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--green);
+}
+
+/* LOADING */
+.loading {
+  display: none;
+  text-align: center;
+  padding: 3rem;
+}
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border-md);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { font-size: 0.85rem; color: var(--muted); }
+.loading-status { font-size: 0.78rem; color: var(--green); margin-top: 0.5rem; font-family: 'JetBrains Mono', monospace; }
+
+/* ERROR */
+.error-box {
+  display: none;
+  background: var(--red-dim);
+  border: 1px solid rgba(224,84,64,0.3);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.88rem;
+  color: #f09080;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* RESULT */
+.result { display: none; }
+
+.verdict-bar {
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.verdict-bar.go { background: var(--green-dim); border: 1px solid rgba(126,200,80,0.3); }
+.verdict-bar.maybe { background: var(--amber-dim); border: 1px solid rgba(240,168,48,0.3); }
+.verdict-bar.skip { background: var(--red-dim); border: 1px solid rgba(224,84,64,0.3); }
+
+.verdict-icon { font-size: 2.5rem; flex-shrink: 0; }
+.verdict-text {}
+.verdict-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 0.35rem;
+}
+.verdict-bar.go .verdict-label { color: var(--green); }
+.verdict-bar.maybe .verdict-label { color: var(--amber); }
+.verdict-bar.skip .verdict-label { color: var(--red); }
+.verdict-summary { font-size: 0.9rem; color: var(--text); line-height: 1.55; opacity: 0.85; }
+
+.score-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.score-card {
+  background: var(--surface);
+  border: 1px solid var(--border-md);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+}
+.score-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.score-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.score-val.good { color: var(--green); }
+.score-val.ok { color: var(--amber); }
+.score-val.bad { color: var(--red); }
+.score-sub { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+.detail-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.detail-content { font-size: 0.85rem; line-height: 1.7; color: var(--text); opacity: 0.85; }
+.detail-content ul { padding-left: 1.1rem; }
+.detail-content li { margin-bottom: 0.3rem; }
+.detail-content li::marker { color: var(--green); }
+
+.money-box {
+  background: var(--surface2);
+  border: 1px solid var(--border-md);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.money-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+.money-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.money-item {}
+.money-item-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.money-item-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.money-item-val.highlight { color: var(--green); }
+.money-item-sub { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+.suggest-box {
+  background: linear-gradient(135deg, rgba(126,200,80,0.06), rgba(126,200,80,0.02));
+  border: 1px solid rgba(126,200,80,0.2);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.suggest-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--green);
+  margin-bottom: 0.6rem;
+}
+.suggest-text { font-size: 0.88rem; line-height: 1.7; color: var(--text); opacity: 0.9; }
+
+.raw-toggle {
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+.raw-toggle:hover { color: var(--text); }
+.raw-box {
+  display: none;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* FOOTER */
+footer {
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Phil's <span>Job Assessor</span></div>
+  <p>Paste an Airtasker URL · Get an instant assessment</p>
+</header>
+
+<main>
+  <div class="input-card">
+    <label class="input-label">Airtasker Task URL</label>
+    <div class="url-row">
+      <input class="url-input" id="url-input" type="url"
+        placeholder="https://www.airtasker.com/tasks/..."
+        onkeydown="if(event.key==='Enter')assess()">
+      <button class="assess-btn" id="assess-btn" onclick="assess()">Assess →</button>
+    </div>
+    <p class="hint">
+      Open any task on Airtasker, copy the URL from your browser and paste it above.<br>
+      Example: <code>https://www.airtasker.com/tasks/remove-old-shed-gatton/</code>
+    </p>
+  </div>
+
+  <div class="error-box" id="error-box"></div>
+
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+    <p>Fetching and analysing the task...</p>
+    <div class="loading-status" id="loading-status">Reading task page...</div>
+  </div>
+
+  <div class="result" id="result">
+
+    <div class="verdict-bar" id="verdict-bar">
+      <div class="verdict-icon" id="verdict-icon"></div>
+      <div class="verdict-text">
+        <div class="verdict-label" id="verdict-label"></div>
+        <div class="verdict-summary" id="verdict-summary"></div>
+      </div>
+    </div>
+
+    <div class="score-row">
+      <div class="score-card">
+        <div class="score-label">Skill Match</div>
+        <div class="score-val" id="score-skill"></div>
+        <div class="score-sub" id="score-skill-sub"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Budget</div>
+        <div class="score-val" id="score-budget"></div>
+        <div class="score-sub" id="score-budget-sub"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Travel</div>
+        <div class="score-val" id="score-travel"></div>
+        <div class="score-sub" id="score-travel-sub"></div>
+      </div>
+      <div class="score-card">
+        <div class="score-label">Overall</div>
+        <div class="score-val" id="score-overall"></div>
+        <div class="score-sub">out of 10</div>
+      </div>
+    </div>
+
+    <div class="money-box">
+      <div class="money-title">💰 Money Breakdown</div>
+      <div class="money-grid">
+        <div class="money-item">
+          <div class="money-item-label">Posted Budget</div>
+          <div class="money-item-val" id="money-posted"></div>
+          <div class="money-item-sub">what they listed</div>
+        </div>
+        <div class="money-item">
+          <div class="money-item-label">After AT Fee (~15%)</div>
+          <div class="money-item-val" id="money-after-fee"></div>
+          <div class="money-item-sub">platinum tier deduction</div>
+        </div>
+        <div class="money-item">
+          <div class="money-item-label">Suggested Offer</div>
+          <div class="money-item-val highlight" id="money-suggest"></div>
+          <div class="money-item-sub">what to quote</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-card">
+        <div class="detail-title">✅ Green Flags</div>
+        <div class="detail-content" id="flags-good"></div>
+      </div>
+      <div class="detail-card">
+        <div class="detail-title">⚠️ Watch Out For</div>
+        <div class="detail-content" id="flags-watch"></div>
+      </div>
+    </div>
+
+    <div class="suggest-box">
+      <div class="suggest-title">📝 Suggested Opening Message</div>
+      <div class="suggest-text" id="suggest-message"></div>
+    </div>
+
+    <button class="raw-toggle" onclick="toggleRaw()">Show raw task text</button>
+    <div class="raw-box" id="raw-box"></div>
+
+  </div>
+</main>
+
+<footer>
+  Built for Philip Kern · Lockyer Valley, QLD · Airtasker service fee based on Platinum tier (15%)
+</footer>
+
+<script>
+// ── Phil's profile for the AI to reason against ──
+const PHIL_PROFILE = `
+You are assessing Airtasker jobs for Philip Kern, a sole trader based near Gatton, QLD.
+
+SKILLS & CAPABILITIES:
+- General labour (moves ~2m³ soil/hour — genuinely strong)
+- Handyman work (most common tools + some specialty tools)
+- Gardening (lawn, pruning, cleanup, mulching, planting)
+- Demolition (sheds, decks, concrete breaking — this is a specialty he enjoys)
+- Transport & removals (extended ute tray, loading/unloading, tip runs, small moves)
+- Tiling (intermediate skill)
+- Flat pack assembly, general repairs, fencing
+
+NOT his work (decline or flag):
+- Licensed electrical, plumbing, gas fitting
+- Roof work (too high risk without proper gear)
+- Large-scale concreting / laying slabs
+- IT / digital / admin tasks
+
+LOCATION & TRAVEL:
+- Based near Gatton, QLD (Lockyer Valley)
+- Core zone: Lockyer Valley, Toowoomba, Ipswich, Brisbane — no travel penalty
+- Extended: Warwick, Scenic Rim, Gold Coast — acceptable if budget is strong (add ~$50-80 travel)
+- Anything beyond SEQ: decline unless budget is exceptional
+
+RATES (what Phil needs to earn before AT fee):
+- Labour/gardening: $50–70/hr
+- Handyman: $65–90/hr
+- Transport: $90–130/load
+- Demolition: project-based, roughly $70–100/hr labour component
+- Minimum job value (after AT fee): ~$80 for anything within 30 min, ~$120 for Brisbane/Toowoomba
+
+AIRTASKER FEE: Assume 15% platform fee (Platinum tier). Always calculate what Phil actually takes home.
+
+COMPETITION CONTEXT:
+- Phil has 130/130 five-star reviews — this is a significant competitive advantage
+- He should pitch quality and reliability, not chase budget jobs he has to undercut to win
+- His perfect record justifies quoting at or above the posted budget if the job warrants it
+
+OUTPUT FORMAT — respond ONLY with a JSON object, no markdown, no extra text:
+{
+  "verdict": "GO" | "MAYBE" | "SKIP",
+  "overall_score": <1-10 number>,
+  "verdict_summary": "<2 sentences explaining the verdict>",
+  "skill_match": { "score": "<e.g. 9/10>", "label": "<Good/Partial/Poor>", "color": "good|ok|bad" },
+  "budget_score": { "score": "<e.g. 7/10>", "label": "<Strong/Fair/Low>", "color": "good|ok|bad" },
+  "travel_score": { "score": "<e.g. 8/10>", "label": "<Local/Doable/Far>", "color": "good|ok|bad" },
+  "posted_budget": "<e.g. $250 or 'Not specified'>",
+  "after_fee": "<posted budget minus 15%, or 'N/A'>",
+  "suggested_offer": "<what Phil should quote, with brief reasoning>",
+  "green_flags": ["<flag 1>", "<flag 2>", ...],
+  "watch_outs": ["<flag 1>", "<flag 2>", ...],
+  "opening_message": "<A natural, confident 3–4 sentence message Phil can send. Reference his 130 five-star record. Be specific to the job. Don't be sycophantic.>"
+}
+`;
+
+let lastRawText = '';
+
+async function assess() {
+  const url = document.getElementById('url-input').value.trim();
+  if (!url || !url.includes('airtasker.com')) {
+    showError('Please paste a valid Airtasker task URL.');
+    return;
+  }
+
+  // Reset UI
+  document.getElementById('error-box').style.display = 'none';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('assess-btn').disabled = true;
+  setStatus('Fetching task page...');
+
+  try {
+    // Step 1: Fetch the Airtasker page via Claude API (web_fetch tool)
+    setStatus('Reading task details...');
+    const fetchResp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{
+          role: 'user',
+          content: `Use web search to find and read the Airtasker task at this URL: ${url}
+
+Extract and return ONLY the following information in plain text (no JSON, no markdown):
+- Task title
+- Task description (full text)
+- Budget (exact amount or range posted)
+- Location / suburb
+- Date / timing requested
+- Any specific requirements mentioned
+
+Return just the raw extracted information. If you cannot access the page, say "FETCH_FAILED".`
+        }]
+      })
+    });
+
+    const fetchData = await fetchResp.json();
+    const taskText = fetchData.content
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('\n');
+
+    if (!taskText || taskText.includes('FETCH_FAILED') || taskText.length < 50) {
+      throw new Error('Could not read that Airtasker page. Make sure the task is publicly visible and try again.');
+    }
+
+    lastRawText = taskText;
+    setStatus('Analysing job fit...');
+
+    // Step 2: Assess the extracted text against Phil's profile
+    const assessResp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: PHIL_PROFILE,
+        messages: [{
+          role: 'user',
+          content: `Here is the Airtasker task to assess:\n\n${taskText}\n\nAssess this job for Phil. Return only the JSON object as specified.`
+        }]
+      })
+    });
+
+    const assessData = await assessResp.json();
+    const rawJson = assessData.content
+      .filter(b => b.type === 'text')
+      .map(b => b.text)
+      .join('');
+
+    // Parse JSON (strip any accidental markdown fences)
+    const clean = rawJson.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(clean);
+
+    renderResult(result);
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    showError(err.message || 'Something went wrong. Check the URL and try again.');
+  } finally {
+    document.getElementById('assess-btn').disabled = false;
+  }
+}
+
+function renderResult(r) {
+  document.getElementById('loading').style.display = 'none';
+
+  // Verdict bar
+  const bar = document.getElementById('verdict-bar');
+  bar.className = 'verdict-bar ' + r.verdict.toLowerCase();
+  document.getElementById('verdict-icon').textContent =
+    r.verdict === 'GO' ? '✅' : r.verdict === 'MAYBE' ? '🤔' : '❌';
+  document.getElementById('verdict-label').textContent = r.verdict;
+  document.getElementById('verdict-summary').textContent = r.verdict_summary;
+
+  // Scores
+  setScore('score-skill', r.skill_match.score, r.skill_match.label, r.skill_match.color);
+  setScore('score-budget', r.budget_score.score, r.budget_score.label, r.budget_score.color);
+  setScore('score-travel', r.travel_score.score, r.travel_score.label, r.travel_score.color);
+  const overallEl = document.getElementById('score-overall');
+  overallEl.textContent = r.overall_score + '/10';
+  overallEl.className = 'score-val ' + scoreColor(r.overall_score);
+
+  // Money
+  document.getElementById('money-posted').textContent = r.posted_budget;
+  document.getElementById('money-after-fee').textContent = r.after_fee;
+  document.getElementById('money-suggest').textContent = r.suggested_offer.split(' ')[0]; // just the $amount
+
+  // Also show full suggested offer reasoning in a sub
+  const moneyGrid = document.querySelector('.money-grid');
+  const lastItem = moneyGrid.lastElementChild;
+  lastItem.querySelector('.money-item-sub').textContent = r.suggested_offer.replace(/^\$[\d,–-]+\s*/, '').substring(0, 60);
+
+  // Flags
+  document.getElementById('flags-good').innerHTML = '<ul>' + (r.green_flags || []).map(f => `<li>${f}</li>`).join('') + '</ul>';
+  document.getElementById('flags-watch').innerHTML = '<ul>' + (r.watch_outs || []).map(f => `<li>${f}</li>`).join('') + '</ul>';
+
+  // Opening message
+  document.getElementById('suggest-message').textContent = r.opening_message;
+
+  // Raw
+  document.getElementById('raw-box').textContent = lastRawText;
+
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setScore(id, score, label, color) {
+  const el = document.getElementById(id);
+  el.textContent = score;
+  el.className = 'score-val ' + color;
+  const sub = el.nextElementSibling;
+  if (sub) sub.textContent = label;
+}
+
+function scoreColor(n) {
+  if (n >= 7) return 'good';
+  if (n >= 5) return 'ok';
+  return 'bad';
+}
+
+function setStatus(msg) {
+  document.getElementById('loading-status').textContent = msg;
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-box');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function toggleRaw() {
+  const box = document.getElementById('raw-box');
+  box.style.display = box.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+</body>
+</html>
