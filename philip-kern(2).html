@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Philip Kern · Handyman & Labour Services · Lockyer Valley to Brisbane</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --soil: #2c1f0e;
+  --bark: #4a3420;
+  --rust: #c0541a;
+  --rust-light: #e06b2a;
+  --straw: #e8c97a;
+  --sky: #d4eaf5;
+  --offwhite: #f5f0e8;
+  --text: #1a1208;
+  --muted: #7a6550;
+  --border: rgba(74,52,32,0.15);
+  --card: #fffdf8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: var(--offwhite);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── NOISE TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+nav.scrolled {
+  background: rgba(245,240,232,0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 var(--border);
+}
+.nav-logo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--soil);
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.nav-logo span { color: var(--rust); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--bark);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--rust); }
+.nav-cta {
+  background: var(--rust);
+  color: #fff !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: 4px;
+  transition: background 0.15s !important;
+}
+.nav-cta:hover { background: var(--rust-light) !important; color: #fff !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  background: var(--soil);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8rem 3rem 5rem 5rem;
+  position: relative;
+  z-index: 2;
+}
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 2px;
+  background: var(--rust);
+}
+.hero h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 800;
+  font-size: clamp(3.5rem, 7vw, 5.5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--offwhite);
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--straw);
+  display: block;
+}
+.hero-desc {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(245,240,232,0.65);
+  max-width: 400px;
+  margin-bottom: 2.5rem;
+}
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--rust);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  display: inline-block;
+}
+.btn-primary:hover { background: var(--rust-light); transform: translateY(-1px); }
+.btn-secondary {
+  background: transparent;
+  color: var(--offwhite);
+  padding: 0.85rem 2rem;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid rgba(245,240,232,0.3);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: inline-block;
+}
+.btn-secondary:hover { border-color: var(--straw); background: rgba(232,201,122,0.08); }
+
+.hero-stats {
+  margin-top: 3.5rem;
+  display: flex;
+  gap: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid rgba(245,240,232,0.1);
+}
+.hero-stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--straw);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.45);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.hero-right {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 4rem 5rem 2rem;
+}
+/* Decorative diagonal slash */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 120px;
+  height: 100%;
+  background: var(--soil);
+  transform: skewX(-4deg);
+  z-index: 1;
+}
+.hero-right-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #3a2a16 0%, #1e1508 100%);
+  z-index: 0;
+}
+.hero-right-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 400px;
+}
+.service-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.pill {
+  background: rgba(192,84,26,0.2);
+  border: 1px solid rgba(192,84,26,0.4);
+  color: var(--straw);
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.hero-airtasker {
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(245,240,232,0.12);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.stars { color: var(--straw); font-size: 1rem; letter-spacing: 2px; }
+.airtasker-text strong {
+  color: var(--offwhite);
+  font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.airtasker-text p {
+  font-size: 0.78rem;
+  color: rgba(245,240,232,0.5);
+  line-height: 1.5;
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+  z-index: 3;
+}
+.scroll-line {
+  width: 40px;
+  height: 1px;
+  background: rgba(245,240,232,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  left: -100%;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--rust);
+  animation: scrollSlide 2s ease-in-out infinite;
+}
+@keyframes scrollSlide { 0%{left:-100%} 100%{left:100%} }
+
+/* ── SECTION BASE ── */
+section { padding: 6rem 2rem; }
+.container { max-width: 1100px; margin: 0 auto; }
+.section-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 2px;
+  background: var(--rust);
+}
+.section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--soil);
+  margin-bottom: 1rem;
+}
+.section-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── SERVICES ── */
+#services { background: var(--offwhite); }
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+.service-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--rust);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s;
+}
+.service-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(44,31,14,0.1); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+.service-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--soil);
+  margin-bottom: 0.5rem;
+}
+.service-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+.service-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.example-tag {
+  font-size: 0.7rem;
+  background: rgba(192,84,26,0.08);
+  color: var(--bark);
+  border: 1px solid rgba(192,84,26,0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ── WHY PHIL ── */
+#about { background: var(--soil); color: var(--offwhite); }
+#about .section-title { color: var(--offwhite); }
+#about .section-sub { color: rgba(245,240,232,0.6); }
+#about .section-label { color: var(--straw); }
+#about .section-label::before { background: var(--straw); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  margin-top: 3.5rem;
+}
+.about-points { display: flex; flex-direction: column; gap: 1.5rem; }
+.about-point { display: flex; gap: 1.25rem; align-items: flex-start; }
+.point-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: rgba(192,84,26,0.25);
+  border: 1px solid rgba(192,84,26,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.point-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+.point-desc { font-size: 0.85rem; color: rgba(245,240,232,0.55); line-height: 1.6; }
+
+.about-review-stack { display: flex; flex-direction: column; gap: 1rem; }
+.review-card {
+  background: rgba(245,240,232,0.05);
+  border: 1px solid rgba(245,240,232,0.1);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+.review-stars { color: var(--straw); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 0.75rem; }
+.review-text { font-size: 0.88rem; line-height: 1.7; color: rgba(245,240,232,0.75); font-style: italic; margin-bottom: 1rem; }
+.review-author { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--rust-light); }
+.airtasker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--straw);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(232,201,122,0.3);
+  padding-bottom: 2px;
+  transition: border-color 0.15s;
+}
+.airtasker-link:hover { border-color: var(--straw); }
+
+/* ── PRICING ── */
+#pricing { background: #f0ebe0; }
+.pricing-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 3.5rem; }
+.pricing-note {
+  background: rgba(192,84,26,0.08);
+  border-left: 3px solid var(--rust);
+  padding: 1rem 1.25rem;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.83rem;
+  color: var(--bark);
+  line-height: 1.65;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.price-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.75rem 1.5rem;
+  transition: box-shadow 0.2s;
+}
+.price-card:hover { box-shadow: 0 8px 24px rgba(44,31,14,0.08); }
+.price-service {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--soil);
+  margin-bottom: 0.35rem;
+}
+.price-range {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--rust);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.price-unit { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
+.price-includes { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+.pricing-footer {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.pricing-footer p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; max-width: 560px; }
+.pricing-footer strong { color: var(--soil); }
+
+/* ── COVERAGE ── */
+#coverage { background: var(--offwhite); }
+.coverage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 3.5rem;
+}
+.coverage-map-placeholder {
+  background: var(--sky);
+  border: 1px solid rgba(74,52,32,0.1);
+  border-radius: 8px;
+  min-height: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+.coverage-map-placeholder .map-icon { font-size: 3rem; opacity: 0.5; }
+.coverage-map-placeholder p { font-size: 0.83rem; color: var(--muted); max-width: 220px; line-height: 1.6; }
+
+.coverage-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+.coverage-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--bark);
+  padding: 0.65rem 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.coverage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rust);
+  flex-shrink: 0;
+}
+.coverage-dot.secondary { background: var(--muted); }
+.coverage-note { font-size: 0.8rem; color: var(--muted); margin-left: auto; font-style: italic; }
+
+/* ── AVAILABILITY / CALENDAR ── */
+#availability { background: #f0ebe0; }
+.cal-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  margin-top: 3.5rem;
+  align-items: start;
+}
+.cal-info { display: flex; flex-direction: column; gap: 1.25rem; }
+.week-pattern {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.week-day {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+}
+.week-day:last-child { border-bottom: none; }
+.day-name { font-weight: 600; color: var(--soil); min-width: 100px; }
+.day-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.status-avail { background: rgba(34,139,34,0.1); color: #1a6b1a; }
+.status-busy { background: rgba(192,84,26,0.12); color: var(--rust); }
+.status-flex { background: rgba(74,52,32,0.08); color: var(--muted); }
+.cal-embed-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 500px;
+}
+.cal-embed-wrap iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  display: block;
+}
+.cal-placeholder {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+.cal-placeholder .cal-icon { font-size: 3rem; opacity: 0.35; }
+.cal-placeholder h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--soil);
+}
+.cal-placeholder p { font-size: 0.83rem; color: var(--muted); max-width: 280px; line-height: 1.6; }
+.cal-placeholder code {
+  font-size: 0.75rem;
+  background: rgba(74,52,32,0.08);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: var(--bark);
+  display: block;
+  margin-top: 0.5rem;
+  word-break: break-all;
+}
+
+/* ── CONTACT ── */
+#contact { background: var(--soil); color: var(--offwhite); }
+#contact .section-title { color: var(--offwhite); }
+#contact .section-label { color: var(--straw); }
+#contact .section-label::before { background: var(--straw); }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-top: 3.5rem;
+  align-items: start;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.5);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(245,240,232,0.06);
+  border: 1px solid rgba(245,240,232,0.15);
+  color: var(--offwhite);
+  padding: 0.7rem 1rem;
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--rust); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group select option { background: var(--bark); }
+.form-submit {
+  margin-top: 0.5rem;
+  background: var(--rust);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s;
+  align-self: flex-start;
+}
+.form-submit:hover { background: var(--rust-light); }
+
+.contact-info { display: flex; flex-direction: column; gap: 1.75rem; }
+.contact-detail {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.contact-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  background: rgba(192,84,26,0.25);
+  border: 1px solid rgba(192,84,26,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.contact-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(245,240,232,0.4);
+  margin-bottom: 0.3rem;
+}
+.contact-value {
+  font-size: 0.95rem;
+  color: var(--offwhite);
+  text-decoration: none;
+}
+.contact-value:hover { color: var(--straw); }
+.contact-sub { font-size: 0.8rem; color: rgba(245,240,232,0.4); margin-top: 2px; }
+
+.form-success {
+  display: none;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.3);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  font-size: 0.88rem;
+  color: #4ade80;
+  line-height: 1.6;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #1a110a;
+  padding: 2rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(245,240,232,0.3);
+}
+footer a { color: rgba(245,240,232,0.4); text-decoration: none; }
+footer a:hover { color: var(--straw); }
+
+/* ── ANIMATIONS ── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+
+/* ── TICKER TAPE ── */
+.ticker-wrap {
+  background: var(--rust);
+  overflow: hidden;
+  padding: 0;
+  white-space: nowrap;
+  position: relative;
+  z-index: 99;
+  margin-top: 0;
+}
+.ticker-inner {
+  display: inline-flex;
+  animation: ticker-scroll 38s linear infinite;
+  will-change: transform;
+}
+.ticker-wrap:hover .ticker-inner { animation-play-state: paused; }
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 2.5rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.95);
+  flex-shrink: 0;
+}
+.ticker-item .ticker-stars {
+  color: var(--straw);
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.ticker-item .ticker-text { font-style: italic; }
+.ticker-item .ticker-sep {
+  color: rgba(255,255,255,0.35);
+  font-size: 1.1rem;
+  margin: 0 1.5rem;
+}
+.ticker-item .ticker-author {
+  font-weight: 600;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── DELIVERY ESTIMATOR ── */
+.estimator-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid var(--rust);
+  color: var(--rust);
+  padding: 0.45rem 1rem;
+  border-radius: 5px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.estimator-trigger:hover { background: var(--rust); color: #fff; }
+.estimator-trigger .trigger-arrow {
+  display: inline-block;
+  transition: transform 0.25s;
+  font-style: normal;
+}
+.estimator-trigger.open .trigger-arrow { transform: rotate(180deg); }
+
+.estimator-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+  opacity: 0;
+}
+.estimator-panel.open {
+  max-height: 600px;
+  opacity: 1;
+}
+.estimator-inner {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+.est-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+.est-field { display: flex; flex-direction: column; gap: 0.35rem; }
+.est-field label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.est-field input {
+  background: var(--offwhite);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+.est-field input:focus { border-color: var(--rust); }
+.est-calc-btn {
+  width: 100%;
+  background: var(--rust);
+  color: #fff;
+  border: none;
+  padding: 0.65rem;
+  border-radius: 6px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.est-calc-btn:hover { background: var(--rust-light); }
+.est-calc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.est-spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  display: none;
+}
+.est-calc-btn.loading .est-spinner { display: block; }
+.est-calc-btn.loading .est-btn-text { opacity: 0.6; }
+
+.est-result {
+  display: none;
+  margin-top: 1rem;
+  background: var(--surface2, #f5f0e8);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+}
+#pricing .est-result { background: #ede8dc; }
+.est-result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 0.85rem;
+}
+.est-stat { text-align: center; }
+.est-stat-num {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--rust);
+  line-height: 1;
+}
+.est-stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+.est-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.est-price-label { font-size: 0.78rem; color: var(--muted); }
+.est-price-val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: var(--soil);
+}
+.est-price-range { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.est-breakdown {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 0.6rem;
+  line-height: 1.6;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+}
+.est-error {
+  display: none;
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: #c0391a;
+  background: rgba(192,57,26,0.07);
+  border: 1px solid rgba(192,57,26,0.2);
+  border-radius: 6px;
+  padding: 0.6rem 0.85rem;
+  line-height: 1.5;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero::after { display: none; }
+  .hero-left { padding: 7rem 2rem 2rem; }
+  .hero-right { padding: 2rem; }
+  .hero-right-bg { display: none; }
+  .about-grid, .coverage-grid, .contact-grid, .pricing-intro, .cal-layout { grid-template-columns: 1fr; gap: 2rem; }
+  nav { padding: 1rem; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="#top">Philip <span>Kern</span></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#availability">Availability</a></li>
+    <li><a href="#contact" class="nav-cta">Book Now</a></li>
+  </ul>
+</nav>
+
+<!-- TICKER TAPE -->
+<div class="ticker-wrap" id="ticker-wrap">
+  <div class="ticker-inner" id="ticker-inner">
+    <!-- Populated by JS from data.json -->
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Lockyer Valley to Brisbane</div>
+    <h1>Get It<em>Done Right</em></h1>
+    <p class="hero-desc">Reliable handyman, labour, gardening and transport services across Southeast Queensland. Strong work, clean finish — every time.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Request a Quote</a>
+      <a href="#services" class="btn-secondary">See What I Do</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num" id="stat-review-count">130</div>
+        <div class="hero-stat-label">5-Star Reviews</div>
+      </div>
+      <div>
+        <div class="hero-stat-num" id="stat-rating-pct">100%</div>
+        <div class="hero-stat-label">Airtasker Rating</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">SEQ</div>
+        <div class="hero-stat-label">Wide Coverage</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-right-bg"></div>
+    <div class="hero-right-content">
+      <div class="service-pills">
+        <span class="pill">🔨 Handyman</span>
+        <span class="pill">💪 Labour</span>
+        <span class="pill">🌿 Gardening</span>
+        <span class="pill">🚛 Transport</span>
+        <span class="pill">🏚 Demolition</span>
+        <span class="pill">🪚 Tiling & More</span>
+      </div>
+      <div class="hero-airtasker">
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="airtasker-text">
+            <strong id="hero-at-badge">130 reviews · 5.0 on Airtasker</strong>
+            <p>"Phil was outstanding — fast, strong, tidy and great to deal with. Would absolutely use again."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">What I Do</div>
+    <h2 class="section-title">Services</h2>
+    <p class="section-sub">From a single afternoon job to multi-day projects — I bring the tools, the ute, and the work ethic.</p>
+    <div class="services-grid">
+      <div class="service-card fade-up">
+        <span class="service-icon">🔨</span>
+        <div class="service-name">Handyman</div>
+        <div class="service-desc">General repairs, installations and maintenance. Most common tools on hand, plus specialty gear for less common jobs.</div>
+        <div class="service-examples">
+          <span class="example-tag">Fence repairs</span>
+          <span class="example-tag">Flat pack assembly</span>
+          <span class="example-tag">Tiling</span>
+          <span class="example-tag">Minor carpentry</span>
+          <span class="example-tag">Odd jobs</span>
+        </div>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon">💪</span>
+        <div class="service-name">Labour & Demolition</div>
+        <div class="service-desc">Hard, honest work. Moves roughly 2m³ of soil per hour. Particularly experienced in demolition — sheds, decks, concrete breaking.</div>
+        <div class="service-examples">
+          <span class="example-tag">Soil & mulch shifting</span>
+          <span class="example-tag">Shed demolition</span>
+          <span class="example-tag">Concrete breaking</span>
+          <span class="example-tag">Site cleanup</span>
+          <span class="example-tag">Heavy lifting</span>
+        </div>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon">🌿</span>
+        <div class="service-name">Gardening</div>
+        <div class="service-desc">Tidy, thorough garden work from routine maintenance to larger landscaping prep. Leaves the job looking better than it started.</div>
+        <div class="service-examples">
+          <span class="example-tag">Lawn care</span>
+          <span class="example-tag">Pruning & hedging</span>
+          <span class="example-tag">Garden cleanup</span>
+          <span class="example-tag">Mulching</span>
+          <span class="example-tag">Planting</span>
+        </div>
+      </div>
+      <div class="service-card fade-up">
+        <span class="service-icon">🚛</span>
+        <div class="service-name">Transport & Removals</div>
+        <div class="service-desc">Extended ute tray for pickups, deliveries and small moves. Happy to help load and unload. Available across SEQ with regional jobs negotiable.</div>
+        <div class="service-examples">
+          <span class="example-tag">Furniture pickup</span>
+          <span class="example-tag">Rubbish removal</span>
+          <span class="example-tag">Tip runs</span>
+          <span class="example-tag">Goods delivery</span>
+          <span class="example-tag">Small moves</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / WHY PHIL -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Why Philip Kern</div>
+    <h2 class="section-title">Strong Work.<br>Clean Finish.</h2>
+    <p class="section-sub" style="color:rgba(245,240,232,0.6)">Based near Gatton, servicing the Lockyer Valley, Toowoomba, Ipswich and Brisbane. Built on word of mouth and a perfect Airtasker record.</p>
+    <div class="about-grid">
+      <div class="about-points">
+        <div class="about-point fade-up">
+          <div class="point-icon">⭐</div>
+          <div>
+            <div class="point-title"><span id="about-record-count">130</span> from <span id="about-record-total">130</span> — Perfect Record</div>
+            <div class="point-desc">Every single Airtasker job rated 5 stars. Repeat customers and word-of-mouth referrals make up a growing share of the work.</div>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <div class="point-icon">💪</div>
+          <div>
+            <div class="point-title">Genuinely Strong</div>
+            <div class="point-desc">Not just available — capable. Moving ~2m³ of soil per hour isn't a claim, it's a consistent output clients can plan around.</div>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <div class="point-icon">🧹</div>
+          <div>
+            <div class="point-title">Tidy As I Go</div>
+            <div class="point-desc">Strong doesn't mean sloppy. Sites are left clean, jobs are finished properly, not just done. That's the standard every time.</div>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <div class="point-icon">🚛</div>
+          <div>
+            <div class="point-title">The Right Gear</div>
+            <div class="point-desc">Extended ute tray, a full set of common tools, and a range of specialty gear means fewer "I'll need to come back" moments.</div>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <div class="point-icon">📍</div>
+          <div>
+            <div class="point-title">Genuinely Local</div>
+            <div class="point-desc">Based near Gatton — not just a listing. Travel time stays short for Lockyer Valley, Toowoomba and Brisbane clients.</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-review-stack" id="about-reviews">
+        <!-- Populated by JS from data.json -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="pricing-intro">
+      <div>
+        <div class="section-label">What It Costs</div>
+        <h2 class="section-title">Honest Pricing</h2>
+        <p class="section-sub">Rates vary by job, travel and complexity. These are realistic guides — get in touch for a free quote on your specific job.</p>
+      </div>
+      <div class="pricing-note">
+        <strong>Travel note:</strong> Jobs within the Lockyer Valley and surrounding areas (Toowoomba, Ipswich, Brisbane) include standard travel. Regional trips to Warwick, Gold Coast and beyond are available — travel is factored into the quote. Nothing hidden.
+      </div>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card fade-up">
+        <div class="price-service">General Labour</div>
+        <div class="price-range">$45–$65</div>
+        <div class="price-unit">per hour</div>
+        <div class="price-includes">Digging, shifting, site cleanup, heavy lifting. Consistent output you can plan around.</div>
+      </div>
+      <div class="price-card fade-up">
+        <div class="price-service">Handyman</div>
+        <div class="price-range">$55–$80</div>
+        <div class="price-unit">per hour</div>
+        <div class="price-includes">Repairs, installations, flat pack assembly, odd jobs. Tools included.</div>
+      </div>
+      <div class="price-card fade-up">
+        <div class="price-service">Gardening</div>
+        <div class="price-range">$45–$65</div>
+        <div class="price-unit">per hour</div>
+        <div class="price-includes">Mowing, pruning, cleanup, mulching. Equipment available.</div>
+      </div>
+      <div class="price-card fade-up">
+        <div class="price-service">Transport</div>
+        <div class="price-range">$80–$120</div>
+        <div class="price-unit">per load / quote</div>
+        <div class="price-includes">Extended ute tray. Pickup, delivery, tip runs, small moves. Loading/unloading included.</div>
+        <button class="estimator-trigger" onclick="toggleEstimator()" id="est-trigger">
+          🚛 Estimate My Delivery <i class="trigger-arrow">▾</i>
+        </button>
+        <div class="estimator-panel" id="est-panel">
+          <div class="estimator-inner">
+            <div class="est-row">
+              <div class="est-field">
+                <label>Pickup Location</label>
+                <input type="text" id="est-pickup" placeholder="e.g. Ipswich QLD" onkeydown="if(event.key==='Enter')calcEstimate()">
+              </div>
+              <div class="est-field">
+                <label>Delivery Location</label>
+                <input type="text" id="est-dropoff" placeholder="e.g. Brisbane CBD" onkeydown="if(event.key==='Enter')calcEstimate()">
+              </div>
+            </div>
+            <button class="est-calc-btn" id="est-btn" onclick="calcEstimate()">
+              <span class="est-spinner" id="est-spin"></span>
+              <span class="est-btn-text">Calculate Estimate</span>
+            </button>
+            <div class="est-error" id="est-error"></div>
+            <div class="est-result" id="est-result">
+              <div class="est-result-grid">
+                <div class="est-stat">
+                  <div class="est-stat-num" id="est-km"></div>
+                  <div class="est-stat-label">Total KM</div>
+                </div>
+                <div class="est-stat">
+                  <div class="est-stat-num" id="est-hrs"></div>
+                  <div class="est-stat-label">Est. Hours</div>
+                </div>
+                <div class="est-stat">
+                  <div class="est-stat-num" id="est-fuel"></div>
+                  <div class="est-stat-label">Fuel Cost</div>
+                </div>
+              </div>
+              <div class="est-price-row">
+                <div>
+                  <div class="est-price-label">Estimated Quote</div>
+                  <div class="est-price-range" id="est-range"></div>
+                </div>
+                <div class="est-price-val" id="est-price"></div>
+              </div>
+              <div class="est-breakdown" id="est-breakdown"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="price-card fade-up">
+        <div class="price-service">Demolition</div>
+        <div class="price-range">Get a Quote</div>
+        <div class="price-unit">project-based</div>
+        <div class="price-includes">Sheds, decks, concrete. Priced per project based on scope and disposal needs.</div>
+      </div>
+      <div class="price-card fade-up" style="border-color: var(--rust); border-left: 3px solid var(--rust);">
+        <div class="price-service">Full Day Rate</div>
+        <div class="price-range">Better Value</div>
+        <div class="price-unit">ask about day rates</div>
+        <div class="price-includes">Got a big job? Full and half-day rates are typically better value than hourly. Ask when you enquire.</div>
+      </div>
+    </div>
+    <div class="pricing-footer fade-up">
+      <p><strong>All quotes are free and obligation-free.</strong> Prices above are guides only — the actual cost depends on the job, access, travel and time. Message or email and I'll get back to you quickly.</p>
+      <a href="#contact" class="btn-primary">Get a Free Quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section id="coverage">
+  <div class="container">
+    <div class="coverage-grid">
+      <div>
+        <div class="section-label">Where I Work</div>
+        <h2 class="section-title">SEQ & Beyond</h2>
+        <p class="section-sub">Based near Gatton in the Lockyer Valley — well placed between Toowoomba and Brisbane for most jobs.</p>
+        <div class="coverage-list">
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot"></div>
+            <span>Lockyer Valley (Home Base)</span>
+          </div>
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot"></div>
+            <span>Toowoomba & Darling Downs</span>
+          </div>
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot"></div>
+            <span>Ipswich & surrounds</span>
+          </div>
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot"></div>
+            <span>Brisbane (all areas)</span>
+          </div>
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot secondary"></div>
+            <span>Warwick / Southern Downs</span>
+            <span class="coverage-note">by arrangement</span>
+          </div>
+          <div class="coverage-item fade-up">
+            <div class="coverage-dot secondary"></div>
+            <span>Gold Coast & surrounds</span>
+            <span class="coverage-note">by arrangement</span>
+          </div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:1rem;line-height:1.6;">Regional and extended travel jobs considered — if the price is right, distance isn't a problem. Just ask.</p>
+      </div>
+      <div class="coverage-map-placeholder fade-up">
+        <div class="map-icon">🗺</div>
+        <p>An embedded map can go here — drop a Google Maps embed code showing the coverage zone.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVAILABILITY -->
+<section id="availability">
+  <div class="container">
+    <div class="section-label">When I'm Free</div>
+    <h2 class="section-title">Availability</h2>
+    <p class="section-sub">Generally available most days. Tuesdays and Thursdays I look after my son — I typically keep one of those free each week.</p>
+    <div class="cal-layout">
+      <div class="cal-info">
+        <div class="week-pattern">
+          <div class="week-day"><span class="day-name">Monday</span><span class="day-status status-avail">Available</span></div>
+          <div class="week-day"><span class="day-name">Tuesday</span><span class="day-status status-flex">Usually Free</span></div>
+          <div class="week-day"><span class="day-name">Wednesday</span><span class="day-status status-avail">Available</span></div>
+          <div class="week-day"><span class="day-name">Thursday</span><span class="day-status status-flex">Usually Free</span></div>
+          <div class="week-day"><span class="day-name">Friday</span><span class="day-status status-avail">Available</span></div>
+          <div class="week-day"><span class="day-name">Saturday</span><span class="day-status status-avail">Available</span></div>
+          <div class="week-day"><span class="day-name">Sunday</span><span class="day-status status-avail">Available</span></div>
+        </div>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.6;">The calendar to the right shows my live schedule. Green = available. When you submit an enquiry, your preferred dates are sent to me directly.</p>
+        <a href="#contact" class="btn-primary" style="align-self:flex-start">Check a Date & Book</a>
+      </div>
+      <div class="cal-embed-wrap">
+        <!-- 
+          GOOGLE CALENDAR EMBED INSTRUCTIONS:
+          1. Open Google Calendar
+          2. Go to Settings → your calendar → "Integrate calendar"
+          3. Copy the "Embed code" (the <iframe> tag)
+          4. Replace everything inside .cal-embed-wrap with that iframe
+          5. Suggested settings: set calendar to public (busy/free only is fine for privacy)
+        -->
+        <div class="cal-placeholder">
+          <div class="cal-icon">📅</div>
+          <h3>Live Calendar</h3>
+          <p>Paste your Google Calendar embed code here to show your live availability. Instructions:</p>
+          <code>Google Calendar → Settings → [Your Calendar] → Integrate Calendar → Copy embed &lt;iframe&gt;</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Request a Quote</h2>
+    <div class="contact-grid">
+      <div class="contact-form">
+        <div class="form-success" id="form-success">
+          ✓ Message sent! I'll get back to you as soon as I can — usually within a few hours.
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="f-name" placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="f-phone" placeholder="04xx xxx xxx">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="f-email" placeholder="you@email.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Type of Work</label>
+            <select id="f-type">
+              <option value="">Select a service...</option>
+              <option>General Labour</option>
+              <option>Handyman</option>
+              <option>Gardening</option>
+              <option>Transport / Removals</option>
+              <option>Demolition</option>
+              <option>Multiple / Not Sure</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Preferred Date(s)</label>
+            <input type="text" id="f-date" placeholder="e.g. anytime this week">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Your Location / Suburb</label>
+          <input type="text" id="f-location" placeholder="e.g. Ipswich, QLD">
+        </div>
+        <div class="form-group">
+          <label>Describe the Job</label>
+          <textarea id="f-desc" placeholder="Tell me what needs doing — size, scope, any access info..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send Enquiry →</button>
+      </div>
+      <div class="contact-info">
+        <div class="contact-detail">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-label">Email</div>
+            <a class="contact-value" href="/cdn-cgi/l/email-protection#d9a9b1b0b5b2b0a986b399b1b6adb4b8b0b5f7bab6b4"><span class="__cf_email__" data-cfemail="52223a3b3e393b220d38123a3d263f333b3e7c313d3f">[email&#160;protected]</span></a>
+            <div class="contact-sub">Usually reply within a few hours</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-label">Phone / SMS</div>
+            <span class="contact-value">0X XX XXX XXX</span>
+            <div class="contact-sub">Add your number here</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-label">Based In</div>
+            <span class="contact-value">Near Gatton, QLD</span>
+            <div class="contact-sub">Servicing Lockyer Valley, Toowoomba, Ipswich & Brisbane</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-icon">⭐</div>
+          <div>
+            <div class="contact-label">Airtasker Profile</div>
+            <a class="contact-value" href="https://www.airtasker.com/users/phil-k-1250519/" target="_blank" id="contact-at-link">130 reviews · 5.0 rating</a>
+          </div>
+        </div>
+        <div style="margin-top:0.5rem;padding:1.25rem;background:rgba(245,240,232,0.04);border:1px solid rgba(245,240,232,0.1);border-radius:8px;font-size:0.82rem;color:rgba(245,240,232,0.5);line-height:1.7;">
+          Prefer to message first? That's fine too — email or Airtasker message works. No pressure, no obligation on a quote.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Philip Kern · Handyman & Labour Services · Lockyer Valley, QLD &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection#a3d3cbcacfc8cad3fcc9e3cbccd7cec2cacf8dc0ccce"><span class="__cf_email__" data-cfemail="85f5edece9eeecf5daefc5edeaf1e8e4ece9abe6eae8">[email&#160;protected]</span></a></p>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── Load data.json and populate everything ──
+async function loadData() {
+  try {
+    const resp = await fetch('data.json?v=' + Date.now());
+    const d = await resp.json();
+    applyData(d);
+  } catch(e) {
+    // If data.json can't be loaded (e.g. opening file locally), just leave defaults
+    console.warn('Could not load data.json — using built-in defaults.');
+  }
+}
+
+function applyData(d) {
+  const at = d.airtasker;
+
+  // Hero stats
+  document.getElementById('stat-review-count').textContent = at.review_count;
+  document.getElementById('stat-rating-pct').textContent = at.rating_percent;
+  document.getElementById('hero-at-badge').textContent = at.review_count + ' reviews · ' + at.rating + ' on Airtasker';
+
+  // About section record
+  document.getElementById('about-record-count').textContent = at.review_count;
+  document.getElementById('about-record-total').textContent = at.review_count;
+
+  // Contact AT link
+  document.getElementById('contact-at-link').textContent = at.review_count + ' reviews · ' + at.rating + ' rating';
+
+  // About review cards
+  const stack = document.getElementById('about-reviews');
+  stack.innerHTML = (d.about_reviews || []).map(r => `
+    <div class="review-card fade-up">
+      <div class="review-stars">★★★★★</div>
+      <div class="review-text">"${r.text}"</div>
+      <div class="review-author">${r.author}</div>
+    </div>
+  `).join('') + `
+    <a href="${at.profile_url}" target="_blank" class="airtasker-link">View all ${at.review_count} reviews on Airtasker →</a>
+  `;
+
+  // Re-observe new fade-up elements
+  stack.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Ticker tape
+  buildTicker(d.ticker_reviews || [], at);
+}
+
+function buildTicker(reviews, at) {
+  if (!reviews.length) return;
+  const inner = document.getElementById('ticker-inner');
+
+  // Build one set of items, then duplicate for seamless loop
+  const makeItems = () => reviews.map(r => `
+    <span class="ticker-item">
+      <span class="ticker-stars">★★★★★</span>
+      <span class="ticker-text">${r.text}</span>
+      <span class="ticker-author">— ${r.author}</span>
+      <span class="ticker-sep">·</span>
+    </span>
+  `).join('');
+
+  // Duplicate so the loop is seamless
+  inner.innerHTML = makeItems() + makeItems();
+}
+
+// ── Nav scroll effect ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── Fade-up on scroll ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// ── Contact form ──
+function submitForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const type = document.getElementById('f-type').value;
+  const date = document.getElementById('f-date').value.trim();
+  const location = document.getElementById('f-location').value.trim();
+  const desc = document.getElementById('f-desc').value.trim();
+
+  if (!name || !desc) {
+    alert('Please fill in your name and describe the job.');
+    return;
+  }
+
+  const body = `New job enquiry from the website:\n\nName: ${name}\nPhone: ${phone || 'Not provided'}\nEmail: ${email || 'Not provided'}\nService Type: ${type || 'Not specified'}\nPreferred Dates: ${date || 'Flexible'}\nLocation: ${location || 'Not specified'}\n\nJob Description:\n${desc}`;
+  const subject = `Job Enquiry – ${type || 'General'} – ${name}`;
+
+  window.location.href = `mailto:philkip_j@hotmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  document.getElementById('form-success').style.display = 'block';
+  document.querySelector('.contact-form').style.opacity = '0.5';
+}
+
+// ── DELIVERY ESTIMATOR ──
+const FUEL_PRICE_PER_L = 2.05;
+const LITRES_PER_100KM = 10;
+const RATE_PER_HR = 50;
+const WEAR_PER_KM = 0.18;
+
+function toggleEstimator() {
+  const panel = document.getElementById('est-panel');
+  const trigger = document.getElementById('est-trigger');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  trigger.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    setTimeout(() => document.getElementById('est-pickup').focus(), 350);
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+async function calcEstimate() {
+  const pickup = document.getElementById('est-pickup').value.trim();
+  const dropoff = document.getElementById('est-dropoff').value.trim();
+  const btn = document.getElementById('est-btn');
+  const errEl = document.getElementById('est-error');
+  const resultEl = document.getElementById('est-result');
+
+  if (!pickup || !dropoff) {
+    showEstError('Please enter both a pickup and delivery location.');
+    return;
+  }
+
+  errEl.style.display = 'none';
+  resultEl.style.display = 'none';
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 600,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: `You are a driving distance estimator for Queensland, Australia.
+Given two legs of a delivery trip, estimate realistic road driving distances and times.
+Use your knowledge of QLD roads and geography. Search if needed for unfamiliar locations.
+Respond ONLY with a valid JSON object, no markdown fences, no extra text:
+{"leg1_km":NUMBER,"leg2_km":NUMBER,"leg1_hrs":NUMBER,"leg2_hrs":NUMBER,"pickup_suburb":"STRING","dropoff_suburb":"STRING","notes":"STRING"}
+leg1 = Gatton QLD to pickup. leg2 = pickup to dropoff. hrs = decimal driving hours. notes = max 1 sentence (toll roads, highway etc) or empty string.`,
+        messages: [{
+          role: 'user',
+          content: `Leg 1: Gatton QLD to ${pickup}\nLeg 2: ${pickup} to ${dropoff}`
+        }]
+      })
+    });
+
+    const data = await resp.json();
+    const raw = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const d = JSON.parse(clean);
+
+    const totalKm = d.leg1_km + d.leg2_km;
+    const totalHrs = d.leg1_hrs + d.leg2_hrs + 0.5;
+    const fuelCost = (totalKm / 100) * LITRES_PER_100KM * FUEL_PRICE_PER_L;
+    const timeCost = totalHrs * RATE_PER_HR;
+    const wearCost = totalKm * WEAR_PER_KM;
+    const rawTotal = fuelCost + timeCost + wearCost;
+    const estimate = Math.ceil(rawTotal / 5) * 5;
+    const low = Math.round(Math.max(estimate - 10, estimate * 0.92) / 5) * 5;
+    const high = Math.round((estimate + 15) / 5) * 5;
+
+    document.getElementById('est-km').textContent = Math.round(totalKm) + 'km';
+    document.getElementById('est-hrs').textContent = totalHrs.toFixed(1) + 'h';
+    document.getElementById('est-fuel').textContent = '$' + Math.round(fuelCost);
+    document.getElementById('est-price').textContent = '$' + estimate;
+    document.getElementById('est-range').textContent = `Likely range: $${low}–$${high}`;
+    document.getElementById('est-breakdown').innerHTML =
+      `<strong>Breakdown:</strong> ` +
+      `${Math.round(d.leg1_km)}km Gatton→${d.pickup_suburb} + ${Math.round(d.leg2_km)}km ${d.pickup_suburb}→${d.dropoff_suburb} = ${Math.round(totalKm)}km &nbsp;·&nbsp; ` +
+      `Fuel $${Math.round(fuelCost)} &nbsp;·&nbsp; ` +
+      `Time $${Math.round(timeCost)} (~${totalHrs.toFixed(1)}h incl. loading) &nbsp;·&nbsp; ` +
+      `Wear & tear $${Math.round(wearCost)}` +
+      (d.notes ? `<br><em>Note: ${d.notes}</em>` : '');
+
+    resultEl.style.display = 'block';
+
+  } catch(err) {
+    showEstError('Could not calculate — try being more specific (e.g. "Ipswich QLD" or "Brisbane CBD QLD").');
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+function showEstError(msg) {
+  const el = document.getElementById('est-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// Kick everything off
+loadData();
+</script>
+</body>
+</html>
