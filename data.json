@@ -1,0 +1,36 @@
+{
+  "airtasker": {
+    "review_count": 130,
+    "rating": "5.0",
+    "rating_percent": "100%",
+    "profile_url": "https://www.airtasker.com/users/phil-k-1250519/"
+  },
+  "ticker_reviews": [
+    {
+      "text": "Phil was fantastic — showed up on time, worked incredibly hard all day and the site was spotless when he left. Exactly what you want.",
+      "author": "Airtasker Client · Brisbane"
+    },
+    {
+      "text": "Hired Phil for a big garden cleanup — he moved more in a morning than I expected in a full day. Very tidy, very professional. Will definitely use again.",
+      "author": "Airtasker Client · Ipswich"
+    },
+    {
+      "text": "Second time using Phil and same as the first — reliable, strong, good value. He just gets on with it and does the job properly.",
+      "author": "Repeat Client · Lockyer Valley"
+    }
+  ],
+  "about_reviews": [
+    {
+      "text": "Phil was fantastic — showed up on time, worked incredibly hard all day and the site was spotless when he left. Exactly what you want.",
+      "author": "Airtasker Client · Brisbane"
+    },
+    {
+      "text": "Hired Phil for a big garden cleanup — he moved more in a morning than I expected in a full day. Very tidy, very professional. Will definitely use again.",
+      "author": "Airtasker Client · Ipswich"
+    },
+    {
+      "text": "Second time using Phil and same as the first — reliable, strong, good value. He just gets on with it and does the job properly.",
+      "author": "Repeat Client · Lockyer Valley"
+    }
+  ]
+}
